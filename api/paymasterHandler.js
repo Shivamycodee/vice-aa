@@ -1,9 +1,5 @@
 const paymasterCall = async (paymasterHash, PaymasterRPC_URL) => {
   try {
-
-    console.log("paymasterHash: ", paymasterHash);
-    console.log("PaymasterRPC_URL: ", PaymasterRPC_URL);
-
     const response = await fetch(PaymasterRPC_URL, {
       method: "POST",
       headers: {
@@ -25,7 +21,6 @@ const paymasterCall = async (paymasterHash, PaymasterRPC_URL) => {
 };
 
 const ERC20paymasterCall = async (paymasterHash, ERC20_PaymasterRPC_URL) => {
-  console.log("Calling ERC20 Paymaster...");
 
   try {
     const response = await fetch(ERC20_PaymasterRPC_URL, {

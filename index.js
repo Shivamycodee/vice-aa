@@ -16,7 +16,6 @@ import {
 } from "./data";
 import { paymasterCall, ERC20paymasterCall } from "./api/paymasterHandler";
 
-
 const getSCWallet = async (address) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(
@@ -92,8 +91,6 @@ const getUserOperation = async (
   userOperation.callGasLimit = res[0].toNumber();
   userOperation.verificationGasLimit = res[1].toNumber() + 1000;
   userOperation.preVerificationGas = res[2].toNumber();
-
-  console.log("userOperation : ", userOperation);
   return userOperation;
 };
 
@@ -104,7 +101,6 @@ function getTxTimeLimit() {
 }
 
 async function getPaymasterAndData(userOperation, PaymasterRPC_URL) {
-
   const timeLimit = getTxTimeLimit();
 
   const signedPaymasterHash = await getSignedPaymasterHash(
@@ -127,11 +123,13 @@ async function getPaymasterAndData(userOperation, PaymasterRPC_URL) {
 }
 
 async function getERC20PaymasterAndData(userOperation, PaymasterRPC_URL) {
-
+  const timeLimit = getTxTimeLimit();
   const paymasterSignature = await getSignedERC20PaymasterHash(
     userOperation,
+    timeLimit,
     PaymasterRPC_URL
   );
+
 
   const priceSource = 1;
   const exchangeRate = ethers.utils.parseUnits("1", 16);
@@ -155,8 +153,8 @@ async function getERC20PaymasterAndData(userOperation, PaymasterRPC_URL) {
     paymasterSignature,
   ]);
 
-  paymasterAndData = ethers.utils.hexlify(paymasterAndData);
-  return paymasterAndData;
+  userOperation.paymasterAndData = ethers.utils.hexlify(paymasterAndData);
+  return userOperation;
 }
 
 const fetchGasValues = async (userOperation, PIMLICO_URL) => {
@@ -222,13 +220,14 @@ const getSignedPaymasterHash = async (userOp, PaymasterRPC_URL) => {
     paymasterHash,
     PaymasterRPC_URL
   );
-
-  console.log("paymasterSignature : ", paymasterSignature);
-
   return paymasterSignature;
 };
 
-const getSignedERC20PaymasterHash = async (userOp, ERC20_PaymasterRPC_URL) => {
+const getSignedERC20PaymasterHash = async (
+  userOp,
+  timeLimit,
+  ERC20_PaymasterRPC_URL
+) => {
   const provider = new ethers.providers.JsonRpcProvider(MUMBAI_URL);
 
   const paymasterContract = new ethers.Contract(
@@ -237,33 +236,26 @@ const getSignedERC20PaymasterHash = async (userOp, ERC20_PaymasterRPC_URL) => {
     provider
   );
 
-  const timeLimit = getTxTimeLimit();
-
   const paymasterHash = await paymasterContract.getHash(
     userOp,
-    "1",
+    1,
     timeLimit[0],
     timeLimit[1],
     CoreTokenAddress,
     OracleAggregator,
     ethers.utils.parseUnits("1", 16),
-    "1010000"
+    1e6 + 1e4
   );
-
-  console.log("ERC20paymasterHash : ", paymasterHash);
 
   const paymasterSignature = await ERC20paymasterCall(
     paymasterHash,
     ERC20_PaymasterRPC_URL
   );
 
-  console.log("ERC20paymasterSignature : ", paymasterSignature);
-
   return paymasterSignature;
 };
 
 const getInitCode = async (address) => {
-
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const contract = new ethers.Contract(
@@ -275,8 +267,6 @@ const getInitCode = async (address) => {
   const initCode = "0x";
   await contract.createAccount(address, 0);
   const _SCWAddress = await contract.getAddress(address, 0);
-  console.log("SCWAddress : ", _SCWAddress);
-
   return [initCode, _SCWAddress];
 };
 
@@ -291,11 +281,11 @@ function convertBigIntToString(obj) {
 }
 
 class CustomJsonRpcProvider extends ethers.providers.JsonRpcProvider {
-  async sendUserOperation(userOperation, entryPoint) {
+  async sendUserOperation(userOperation) {
     const method = "eth_sendUserOperation";
     // Convert BigInt to string
     convertBigIntToString(userOperation);
-    const params = [userOperation, entryPoint];
+    const params = [userOperation, EntryPointAddress];
     return this.send(method, params);
   }
 
@@ -332,8 +322,7 @@ async function waitForReceipt(
   throw new Error("Transaction res not found within timeout period");
 }
 
-
-async function getSignedUserOp(userOperation,PaymasterRPC_URL,flag) {
+async function getSignedUserOp(userOperation, PaymasterRPC_URL, flag) {
   if (flag) {
     console.log("using paymaster...");
     userOperation = await getPaymasterAndData(userOperation, PaymasterRPC_URL);
