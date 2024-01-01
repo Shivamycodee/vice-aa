@@ -12,6 +12,7 @@ import {
   VerifyingPaymasterAddress,
   ERC20VerifierAddress,
   CoreTokenAddress,
+  GAS_FETCH_PRV,
 } from "./data";
 import { paymasterCall, ERC20paymasterCall } from "./api/paymasterHandler";
 
@@ -39,8 +40,13 @@ const getCurrnetNonce = async (address) => {
   return nonce;
 };
 
-const getUserOperation = async (SCWAddress, callContract, minTx) => {
-
+const getUserOperation = async (
+  SCWAddress,
+  callContract,
+  minTx,
+  PaymasterRPC_URL,
+  PIMLICO_URL
+) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const simpleAccount = new ethers.Contract(
     SCWAddress,
@@ -59,15 +65,14 @@ const getUserOperation = async (SCWAddress, callContract, minTx) => {
       0,
       minTx.data,
     ]),
-    callGasLimit:0,
-    verificationGasLimit:0,
-    preVerificationGas:0,
+    callGasLimit: 0,
+    verificationGasLimit: 0,
+    preVerificationGas: 0,
     maxFeePerGas: 70_000_000_000,
     maxPriorityFeePerGas: 70_000_000_000,
     paymasterAndData: "0x",
     signature: "0x",
   };
-
 
   if (SCWAddress == ethers.constants.AddressZero) {
     const signer = provider.getSigner();
@@ -77,14 +82,17 @@ const getUserOperation = async (SCWAddress, callContract, minTx) => {
     userOperation.sender = res[1];
   }
 
-  const userOpWithPaymasterAndData = await getPaymasterAndData(userOperation);
+  const userOpWithPaymasterAndData = await getPaymasterAndData(
+    userOperation,
+    PaymasterRPC_URL
+  );
   userOperation.paymasterAndData = userOpWithPaymasterAndData.paymasterAndData;
 
-  const res = await fetchGasValues(userOperation);
+  const res = await fetchGasValues(userOperation, PIMLICO_URL);
   userOperation.callGasLimit = res[0].toNumber();
   userOperation.verificationGasLimit = res[1].toNumber() + 1000;
   userOperation.preVerificationGas = res[2].toNumber();
-  
+
   console.log("userOperation : ", userOperation);
   return userOperation;
 };
@@ -104,7 +112,7 @@ async function getPaymasterAndData(userOperation, PaymasterRPC_URL) {
     PaymasterRPC_URL
   );
 
-  const paymasterAndData = ethers.utils.concat([
+  let paymasterAndData = ethers.utils.concat([
     VerifyingPaymasterAddress,
     ethers.utils.defaultAbiCoder.encode(
       ["uint48", "uint48"],
@@ -130,7 +138,7 @@ async function getERC20PaymasterAndData(userOperation, PaymasterRPC_URL) {
   const priceMarkup = 1e6 + 1e4;
   const priceSourceBytes = numberToHexString(priceSource);
 
-  const paymasterAndData = ethers.utils.concat([
+  let paymasterAndData = ethers.utils.concat([
     ERC20VerifierAddress,
     priceSourceBytes,
     ethers.utils.defaultAbiCoder.encode(
@@ -151,8 +159,7 @@ async function getERC20PaymasterAndData(userOperation, PaymasterRPC_URL) {
   return paymasterAndData;
 }
 
-const fetchGasValues = async (userOperation) => {
-
+const fetchGasValues = async (userOperation, PIMLICO_URL) => {
   const tempProvider = new ethers.providers.JsonRpcProvider(MUMBAI_URL);
   const tempWallet = new ethers.Wallet(GAS_FETCH_PRV, tempProvider);
 
@@ -181,7 +188,6 @@ const fetchGasValues = async (userOperation) => {
   const preVerificationGas = ethers.BigNumber.from(respond.preVerificationGas);
   return [callGasLimit, verificationGasLimit, preVerificationGas];
 };
-
 
 function numberToHexString(number) {
   if (number < 0) {
@@ -357,7 +363,6 @@ async function getSignedUserOp(userOperation,PaymasterRPC_URL,flag) {
 }
 
 export {
-  getUserOpWithPaymaster,
   getERC20PaymasterAndData,
   numberToHexString,
   getSCWallet,

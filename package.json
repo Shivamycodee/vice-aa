@@ -1,6 +1,6 @@
 {
   "name": "vice-aa",
-  "version": "1.0.2",
+  "version": "1.0.9",
   "description": "made account abstraction easy to understand and use.",
   "main": "index.js",
   "type":"module",

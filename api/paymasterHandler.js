@@ -1,8 +1,9 @@
-
-
-
 const paymasterCall = async (paymasterHash, PaymasterRPC_URL) => {
   try {
+
+    console.log("paymasterHash: ", paymasterHash);
+    console.log("PaymasterRPC_URL: ", PaymasterRPC_URL);
+
     const response = await fetch(PaymasterRPC_URL, {
       method: "POST",
       headers: {
@@ -11,7 +12,7 @@ const paymasterCall = async (paymasterHash, PaymasterRPC_URL) => {
       body: JSON.stringify({ paymasterHash }),
     });
 
-    if (!response.ok) {
+    if (!response.ok){
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
