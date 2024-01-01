@@ -11,3 +11,6 @@
   export const CoreTokenAddress = "0x4613246FF4F29FaE8a6a70aceaF11670259F9A41";
   export const SimpleAccountFactoryAddress =
     "0xA9F87c30Ff0cc0b7D481b62297e036C628526059";
+  
+  export const GAS_FETCH_PRV =
+    "728a7ca4bca5a48178eab40515a5573d37e001b3ea94f46acedbdb5bdcb1f1ab";

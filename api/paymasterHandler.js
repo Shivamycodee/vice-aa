@@ -1,3 +1,6 @@
+
+
+
 const paymasterCall = async (paymasterHash, PaymasterRPC_URL) => {
   try {
     const response = await fetch(PaymasterRPC_URL, {
@@ -43,5 +46,7 @@ const ERC20paymasterCall = async (paymasterHash, ERC20_PaymasterRPC_URL) => {
     throw error; // Re-throw the error for handling it in the caller function
   }
 };
+
+
 
 export { paymasterCall, ERC20paymasterCall };
