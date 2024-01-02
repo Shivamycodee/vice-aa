@@ -6,8 +6,8 @@ npm install vice-aa
 
 ## Supported Networks 
 
-- (MUMBAI NETWORK)[https://mumbai.polygonscan.com/]
-- (POLYGON NETWORK)[https://polygonscan.com/] (Comming Soon...)
+ (MUMBAI NETWORK)[https://mumbai.polygonscan.com/]
+ (POLYGON NETWORK)[https://polygonscan.com/] (Comming Soon...)
  
 ## Paymaster URL's
 
