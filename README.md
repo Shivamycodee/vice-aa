@@ -3,6 +3,20 @@
 npm install vice-aa
 
 
+## Paymaster URL's
+
+[Simple Paymaster](https://vice-aa-api.vercel.app/paymaster){:target="_blank" onclick="copyToClipboard('https://vice-aa-api.vercel.app/paymaster')"}
+
+[ERC20 Token Paymaster](https://vice-aa-api.vercel.app/tokenpaymaster){:target="_blank" onclick="copyToClipboard('https://vice-aa-api.vercel.app/tokenpaymaster')"}
+
+# ERC20 Token For TokenPaymaster
+
+Token Name : CORE TOKEN
+Token Address : 0x4613246FF4F29FaE8a6a70aceaF11670259F9A41
+
+You can get this token from [Uniswap](https://app.uniswap.org/swap)
+
+
 ## Usage
 
 This package provides four main functions:
