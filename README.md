@@ -111,6 +111,10 @@ import { waitForReceipt } from "vice-aa";
 const txHash = await waitForReceipt(customProvider, userOpHash);
 ```
 
+## Example 
+
+- [Apporve A Contract for Token Transfer](https://gist.github.com/Shivamycodee/ea3364cf816863c62cdeb9e6d0b556d0)
+
 ## Support
 
 For additional support or queries, feel free to reach out or open an issue on the [vice-aa repository](https://github.com/Shivamycodee/vice-aa).
