@@ -23,6 +23,8 @@ ERC20 Token Paymaster -> https://vice-aa-api.vercel.app/tokenpaymaster
 
 You can get this token from [Uniswap](https://app.uniswap.org/swap)
 
+> ⚠️ **WARNING:** MAKE SURE TO APPROVE THE [ERC20PAYMASTER](https://mumbai.polygonscan.com/address/0xcF7F76b779e86b0CC5084b5918dB0879f3E6F098) CONTRACT FOR CORE TOKEN TO USE ERC20PAYMASTER URL.
+
 
 ## Usage
 
