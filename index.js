@@ -77,7 +77,7 @@ const getUserOperation = async (
     const signer = provider.getSigner();
     const address = await signer.getAddress();
     const res = await getInitCode(address);
-    // userOperation.initCode = res[0];
+    userOperation.initCode = res[0];
     userOperation.sender = res[1];
   }
 
@@ -256,17 +256,23 @@ const getSignedERC20PaymasterHash = async (
 };
 
 const getInitCode = async (address) => {
+  
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
   const contract = new ethers.Contract(
     SimpleAccountFactoryAddress,
     SimpleAccountFactoryABI,
-    signer
+    provider
   );
 
-  const initCode = "0x";
-  await contract.createAccount(address, 0);
+  const initCode = ethers.utils.hexConcat([
+    SimpleAccountFactoryAddress,
+    contract.interface.encodeFunctionData("createAccount", [address, 0]),
+  ]);
+
+  // const initCode = "0x";
+  // await contract.createAccount(address,0);
   const _SCWAddress = await contract.getAddress(address, 0);
+  console.log("SCWAddress : ", _SCWAddress);
   return [initCode, _SCWAddress];
 };
 
