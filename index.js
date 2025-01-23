@@ -7,11 +7,11 @@ import ERC20VerifyingPaymasterABI from "./abi/ERC20VerifyingPaymaster.json";
 import {
   EntryPointAddress,
   OracleAggregator,
-  MUMBAI_URL,
+  AMOY_URL,
   SimpleAccountFactoryAddress,
   VerifyingPaymasterAddress,
   ERC20VerifierAddress,
-  CoreTokenAddress,
+  HyperTokenAddress,
   GAS_FETCH_PRV,
 } from "./data";
 import { paymasterCall, ERC20paymasterCall } from "./api/paymasterHandler";
@@ -144,7 +144,7 @@ async function getERC20PaymasterAndData(userOperation, PaymasterRPC_URL) {
       [
         timeLimit[0],
         timeLimit[1],
-        CoreTokenAddress,
+        HyperTokenAddress,
         OracleAggregator,
         exchangeRate,
         priceMarkup,
@@ -158,7 +158,7 @@ async function getERC20PaymasterAndData(userOperation, PaymasterRPC_URL) {
 }
 
 const fetchGasValues = async (userOperation, PIMLICO_URL) => {
-  const tempProvider = new ethers.providers.JsonRpcProvider(MUMBAI_URL);
+  const tempProvider = new ethers.providers.JsonRpcProvider(AMOY_URL);
   const tempWallet = new ethers.Wallet(GAS_FETCH_PRV, tempProvider);
 
   const EntryPoint = new ethers.Contract(
@@ -200,7 +200,7 @@ function numberToHexString(number) {
 }
 
 const getSignedPaymasterHash = async (userOp, PaymasterRPC_URL) => {
-  const provider = new ethers.providers.JsonRpcProvider(MUMBAI_URL);
+  const provider = new ethers.providers.JsonRpcProvider(AMOY_URL);
 
   const paymasterContract = new ethers.Contract(
     VerifyingPaymasterAddress,
@@ -228,7 +228,7 @@ const getSignedERC20PaymasterHash = async (
   timeLimit,
   ERC20_PaymasterRPC_URL
 ) => {
-  const provider = new ethers.providers.JsonRpcProvider(MUMBAI_URL);
+  const provider = new ethers.providers.JsonRpcProvider(AMOY_URL);
 
   const paymasterContract = new ethers.Contract(
     ERC20VerifierAddress,
@@ -241,7 +241,7 @@ const getSignedERC20PaymasterHash = async (
     1,
     timeLimit[0],
     timeLimit[1],
-    CoreTokenAddress,
+    HyperTokenAddress,
     OracleAggregator,
     ethers.utils.parseUnits("1", 16),
     1e6 + 1e4

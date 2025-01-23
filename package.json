@@ -1,19 +1,31 @@
 {
   "name": "vice-aa",
-  "version": "1.0.21",
-  "description": "made account abstraction easy to understand and use.",
+  "version": "1.0.23",
+  "description": "Made account abstraction easy to understand and implement.",
   "main": "index.js",
   "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "shivam yadav",
+  "author": "Shivam Yadav <shivamyadav8758@gmail.com> (https://shivamyadav.codes)",
   "license": "ISC",
+  "keywords": [
+    "account abstraction",
+    "ERC-4337",
+    "Gasless transactions",
+    "ethereum",
+    "polygon",
+    "paymaster"
+  ],
+  "homepage": "https://github.com/Shivamycodee",
   "dependencies": {
     "ethers": "^5.7.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Shivamycodee/vice-aa"
+  },
+  "bugs": {
+    "url": "https://github.com/Shivamycodee/vice-aa/issues"
   }
 }

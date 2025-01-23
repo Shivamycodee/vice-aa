@@ -6,7 +6,8 @@ npm install vice-aa
 
 ## Supported Networks 
 
-- [MUMBAI NETWORK](https://mumbai.polygonscan.com/)
+- [AMOY NETWORK](https://amoy.polygonscan.com/) 
+- [MUMBAI NETWORK](https://mumbai.polygonscan.com/) (Depreciated.)
 - [POLYGON NETWORK](https://polygonscan.com/) (Comming Soon...)
  
 ## Paymaster URL's
@@ -18,12 +19,12 @@ ERC20 Token Paymaster -> https://vice-aa-api.vercel.app/tokenpaymaster
 
 # ERC20 Token For TokenPaymaster
 
-- Token Name: CORE TOKEN 
-- Token Address: 0x4613246FF4F29FaE8a6a70aceaF11670259F9A41
+- Token Name: HYPER TOKEN 
+- Token Address: [0x5c54b57557BAB28aC1C416063f657d8C89842896](https://amoy.polygonscan.com/token/0x5c54b57557BAB28aC1C416063f657d8C89842896)
 
 You can get this token from [Uniswap](https://app.uniswap.org/swap)
 
-> ⚠️ **WARNING:** MAKE SURE TO APPROVE THE [ERC20PAYMASTER](https://mumbai.polygonscan.com/address/0xcF7F76b779e86b0CC5084b5918dB0879f3E6F098) CONTRACT FOR CORE TOKEN TO USE ERC20PAYMASTER URL.
+> ⚠️ **WARNING:** MAKE SURE TO APPROVE THE [ERC20PAYMASTER](https://amoy.polygonscan.com/address/0x22bE1dca416b40dc67F1fD09Eaa49347E5b34720) CONTRACT FOR HYPER TOKEN TO USE ERC20PAYMASTER URL.
 
 
 ## Usage
